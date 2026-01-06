@@ -27,6 +27,11 @@ const TaskModal = ({ isOpen, onClose, task }: TaskModalProps) => {
     handleClose();
   };
 
+  const onDelete=(taskId: string)=>{
+    deleteTask(taskId)
+    handleClose()
+  }
+
   if (!isOpen) return null;
 
   return (
@@ -46,7 +51,7 @@ const TaskModal = ({ isOpen, onClose, task }: TaskModalProps) => {
 
         <TaskForm
           onCancel={handleClose}
-          onDelete={() => deleteTask(task.Id!)}
+          onDelete={()=>onDelete(task.Id!)}
           data={toFormData(task)}
           onSubmit={(data) => onSubmit(toData(data))}
         />
