@@ -156,7 +156,9 @@ export const ProjectContextProvider = ({
     const syncState = async (project: Project) => {
       setLoading(true);
       const result = await readProjectData(project);
-      if ("data" in result) setAppData(result.data);
+      if ("data" in result) {
+        setAppData(result.data);
+      }
       else {
         onProjectFileError(result.error, project);
       }
@@ -183,10 +185,10 @@ export const ProjectContextProvider = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
-  if(initialLoading || loading)
+  if(initialLoading || loading || (activeProject && !appData) )
      return <Loading/>;
 
-  if (!activeProject || fileError || !appData )
+  if (!activeProject || fileError )
     return <Welcome fileError={fileError} onGetStarted={onGetStarted} />;
 
 
