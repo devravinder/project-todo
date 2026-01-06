@@ -8,8 +8,12 @@ interface ProjectModalProps {
 }
 
 const ProjectModal = ({ onClose }: ProjectModalProps) => {
-  const { activeProject, getProjects, switchActiveProject: setActiveProject, updateProject: updateProejct } =
-    useProject();
+  const {
+    activeProject,
+    getProjects,
+    switchActiveProject: setActiveProject,
+    updateProject: updateProejct,
+  } = useProject();
 
   const [projects, setProjects] = useState<Project[]>([]);
 
@@ -17,17 +21,26 @@ const ProjectModal = ({ onClose }: ProjectModalProps) => {
     onClose();
   };
 
-  const onSave = async (data: ProjectFormData) => {    
+  const onSave = async (data: ProjectFormData) => {
     for (const project of data.projects) {
       await updateProejct(project);
     }
-    
+
     if (data.activeProjectId !== activeProject.id) {
       const newActiveProject = data.projects.find(
         (p) => p.id === data.activeProjectId
       );
       setActiveProject(newActiveProject!);
+    } else {
+      const isNameChanged = data.projects.findIndex(
+        (old) => old.id === activeProject.id && old.name !== activeProject.name
+      );
+
+      if (isNameChanged >= 0) {
+        setActiveProject(data.projects[isNameChanged]);
+      }
     }
+
     onClose();
   };
 
