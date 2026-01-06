@@ -185,7 +185,7 @@ export const ProjectContextProvider = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
-  if(initialLoading || loading || (activeProject && !appData) )
+  if(initialLoading || loading || (activeProject && !fileError && !appData) )
      return <Loading/>;
 
   if (!activeProject || fileError || !appData )
