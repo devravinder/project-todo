@@ -1,0 +1,17 @@
+export const CLOSE = "⤫";
+export const ADD = "✚";
+export const MINUS = "━"
+export const SETTINGS = "⚙️";
+export const DELETE = "🗑️";
+export const USER = "🙍🏻‍♂️";
+export const CALENDER = "🗓️";
+export const CLOCK = "⏰";
+export const EDIT = "✏️";
+export const ARCHIVE = "📦";
+export const FOLDER = "📂";
+export const CHECK='ꪜ'
+export const STORE = '🛢️'
+export const JSON_TYPE = '{ }'
+export const MD_TYPE = '🇲 🇩'
+export const LOADING="⏳"
+export const WAVE_HAND="👋"

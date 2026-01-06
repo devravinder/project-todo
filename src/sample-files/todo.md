@@ -1,0 +1,307 @@
+
+# Todo
+
+## ⚙️ Configuration
+
+### Statuses
+
+- 📝 To Do
+- 🚀 In Progress
+- 👀 In Review
+- ✅ Done
+- 📦 Archives
+
+### Categories
+
+- Frontend
+- Backend
+- Design
+- DevOps
+- Tests
+- Documentation
+
+### Users
+
+- Ravinder
+- Reddy
+
+### Priorities
+
+- 🔴 Critical
+- 🟠 High
+- 🟡 Medium
+- 🟢 Low
+
+### Tags
+
+- #bug
+- #feature
+- #ui
+- #backend
+- #urgent
+- #refactor
+- #docs
+- #test
+
+### Workflow Statuses
+
+- CREATE_STATUS: 📝 To Do
+- START_STATUS: 🚀 In Progress
+- END_STATUS: ✅ Done
+- ARCHIVE_STATUS: 📦 Archives
+
+### Priority Colors
+
+#### 🔴 Critical
+
+- text-color: #991B1B
+- bg-color: #e8abab
+
+#### 🟠 High
+
+- text-color: #a32900
+- bg-color: #fdb981
+
+#### 🟡 Medium
+
+- text-color: #652525
+- bg-color: #ffea94
+
+#### 🟢 Low
+
+- text-color: #166534
+- bg-color: #bcfbd2
+
+## Tasks
+
+### ✅ Done
+
+#### 001 | Setup Project Repository
+
+- Id: 001
+- Title: Setup Project Repository
+- Description: Initialize Git repository and base project structure.
+- Priority: 🔴 Critical
+- AssignedTo: Ravinder
+- createdDate: 2025-01-10
+- startedDate: 2025-01-10
+- dueDate: 2025-01-12
+- completedDate: 2025-01-12
+- Notes: Initial setup completed successfully.
+- Status: ✅ Done
+
+##### Tags
+
+- #bug
+- #feature
+
+##### Subtasks
+
+- [x] Create GitHub repo
+- [x] Add README.md
+
+#### 007 | Add Priority Colors
+
+- Id: 007
+- Title: Add Priority Colors
+- Description: Apply color coding based on priority.
+- Priority: 🟢 Low
+- AssignedTo: Reddy
+- createdDate: 2025-01-15
+- startedDate: 2025-01-15
+- dueDate: 2025-01-16
+- completedDate: 2025-01-16
+- Notes: Looks good.
+- Status: ✅ Done
+
+##### Tags
+
+- #ui
+- #refactor
+
+##### Subtasks
+
+- [x] Map priority colors
+- [x] Test UI
+
+### 🚀 In Progress
+
+#### 002 | Design Application Layout
+
+- Id: 002
+- Title: Design Application Layout
+- Description: Create layout wireframes and UI structure.
+- Priority: 🟠 High
+- AssignedTo: Reddy
+- createdDate: 2025-01-11
+- startedDate: 2025-01-12
+- dueDate: 2025-01-15
+- Notes: Waiting for feedback.
+- Status: 🚀 In Progress
+
+##### Tags
+
+- #ui
+- #feature
+
+##### Subtasks
+
+- [x] Create wireframes
+- [ ] Approve layout
+
+#### 003 | Implement Task Model
+
+- Id: 003
+- Title: Implement Task Model
+- Description: Create task schema and validation logic.
+- Priority: 🟡 Medium
+- AssignedTo: Ravinder
+- createdDate: 2025-01-12
+- startedDate: 2025-01-12
+- dueDate: 2025-01-14
+- Notes: Schema almost done.
+- Status: 🚀 In Progress
+
+##### Tags
+
+- #backend
+- #feature
+
+##### Subtasks
+
+- [x] Define interface
+- [ ] Add validation
+
+#### 006 | Backend API Integration
+
+- Id: 006
+- Title: Backend API Integration
+- Description: Connect frontend with backend APIs.
+- Priority: 🟠 High
+- AssignedTo: Ravinder
+- createdDate: 2025-01-14
+- startedDate: 2025-01-15
+- dueDate: 2025-01-18
+- Notes: Auth pending.
+- Status: 🚀 In Progress
+
+##### Tags
+
+- #backend
+
+##### Subtasks
+
+- [x] Fetch tasks API
+- [ ] Save updates
+
+### 📝 To Do
+
+#### 004 | Create Task List UI
+
+- Id: 004
+- Title: Create Task List UI
+- Description: Render task list with statuses.
+- Priority: 🟠 High
+- AssignedTo: Ravinder
+- createdDate: 2025-01-13
+- Notes: Blocked by API readiness.
+- Status: 📝 To Do
+- dueDate: 2025-12-31
+
+##### Tags
+
+- #ui
+- #feature
+- #backend
+
+##### Subtasks
+
+- [ ] Create list component
+- [x] Map tasks
+
+#### 005 | Add Drag and Drop
+
+- Id: 005
+- Title: Add Drag and Drop
+- Description: Enable moving tasks between statuses.
+- Priority: 🟠 High
+- createdDate: 2025-01-13
+- dueDate: 2025-01-17
+- Status: 📝 To Do
+
+##### Tags
+
+- #feature
+- #ui
+
+##### Subtasks
+
+- [ ] Implement drag logic
+- [ ] Persist order
+
+#### 008 | Write Unit Tests
+
+- Id: 008
+- Title: Write Unit Tests
+- Description: Add tests for task logic.
+- Priority: 🟡 Medium
+- AssignedTo: Ravinder
+- createdDate: 2025-01-16
+- dueDate: 2025-01-19
+- Status: 📝 To Do
+
+##### Tags
+
+- #test
+
+##### Subtasks
+
+- [ ] Test create task
+- [ ] Test status change
+
+### 👀 In Review
+
+#### 009 | Documentation Update
+
+- Id: 009
+- Title: Documentation Update
+- Description: Update README with usage instructions.
+- Priority: 🟢 Low
+- createdDate: 2025-01-17
+- startedDate: 2025-01-17
+- dueDate: 2025-01-18
+- Status: 👀 In Review
+
+##### Tags
+
+- #docs
+
+##### Subtasks
+
+- [x] Update setup steps
+- [ ] Add screenshots
+
+### 📦 Archives
+
+#### 010 | Archive Old Tasks
+
+- Id: 010
+- Title: Archive Old Tasks
+- Description: Move completed tasks to archive.
+- Priority: 🟢 Low
+- AssignedTo: Reddy
+- createdDate: 2025-01-18
+- startedDate: 2025-01-18
+- dueDate: 2025-01-18
+- completedDate: 2025-01-18
+- Notes: Cleanup done.
+- Status: 📦 Archives
+
+##### Tags
+
+- #refactor
+
+##### Subtasks
+
+- [x] Filter completed tasks
+- [x] Move to archive
