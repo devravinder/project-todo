@@ -14,18 +14,19 @@ type FormData = Omit<Task, "Subtasks" | "dueDate"> & {
 };
 
 const parseSubtasksFromMarkdown = (subtasks: string[]): SubTask[] => {
-  return subtasks.map((task) => {
+  return subtasks?.length ? subtasks.map((task) => {
     const completed = task.startsWith("[x]");
     const text = task.replace(/^\[[ x]\]\s*/, "");
     return { text, completed };
-  });
+  }) : [];
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const toFormData = (task: Task): FormData => {
-  const { Subtasks, dueDate, ...rest } = task;
+  const { Subtasks, dueDate, Tags, ...rest } = task;
   return {
     ...rest,
+    Tags: Tags?.length ? Tags : [],
     dueDate: dueDate ? dayjs(dueDate).format(FORM_DATE_FORMAT) : dueDate,
     Subtasks: parseSubtasksFromMarkdown(Subtasks),
   };
@@ -42,7 +43,7 @@ export const toData = (formData: FormData): Task => {
 };
 
 const convertSubtasksToMarkdown = (subTasks: SubTask[]): string[] => {
-  return subTasks.map((task) => `[${task.completed ? "x" : " "}] ${task.text}`);
+  return subTasks?.length ? subTasks.map((task) => `[${task.completed ? "x" : " "}] ${task.text}`) : [];
 };
 
 type FormProps = {
