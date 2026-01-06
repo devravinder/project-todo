@@ -188,7 +188,7 @@ export const ProjectContextProvider = ({
   if(initialLoading || loading || (activeProject && !appData) )
      return <Loading/>;
 
-  if (!activeProject || fileError )
+  if (!activeProject || fileError || !appData )
     return <Welcome fileError={fileError} onGetStarted={onGetStarted} />;
 
 
