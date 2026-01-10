@@ -8,9 +8,18 @@ import {
 import { FileHandler } from "./FileHandler";
 import { MarkdownParser } from "./MarkdownParser";
 
+const MD_COMMENT = `
+---
+To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)
+`;
+
 export type FileError = {
-  name: "AbortError" | "NotFoundError" | "BrowserNotSupports" | "NotAllowedError",
-  message: string
+  name:
+    | "AbortError"
+    | "NotFoundError"
+    | "BrowserNotSupports"
+    | "NotAllowedError";
+  message: string;
 };
 
 export const writeToStore = async (
@@ -26,7 +35,7 @@ export const writeToStore = async (
       ? MarkdownParser.toMarkdown(storeData as unknown as JSONObject)
       : JSON.stringify(storeData, null, 2);
 
-  await FileHandler.write(fileHandle, content);
+  await FileHandler.write(fileHandle, content + MD_COMMENT);
 };
 
 export type FileReadResult =
@@ -54,6 +63,6 @@ export const readFromStore = async (
   } catch (err) {
     // File might be deleted
     const error = err as FileError;
-    return {error}
+    return { error };
   }
 };
