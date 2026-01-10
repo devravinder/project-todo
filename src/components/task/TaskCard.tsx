@@ -75,14 +75,14 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, isDragging }) => {
               {task.Category}
             </span>
           )}
-          {task.Tags.length && task.Tags.slice(0, 3).map((tag, index) => (
+          {task.Tags.length ? task.Tags.slice(0, 3).map((tag, index) => (
             <span
               key={index}
               className="inline-flex items-center px-2 py-1 text-xs bg-indigo-100 text-indigo-700 rounded"
             >
               {tag}
             </span>
-          ))}
+          )) : undefined}
           {task.Tags.length > 3 && (
             <span className="text-xs text-slate-500">
               +{task.Tags.length - 3}
