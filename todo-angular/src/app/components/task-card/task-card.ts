@@ -84,9 +84,9 @@ import { CALENDER, CLOCK, EDIT, USER } from '../../util/icons';
           <div class="flex items-center">
             {{ CALENDER }} {{ task().createdDate | dateFormatter }}
           </div>
-          @if (task().completedDate) {
+          @if (task().dueDate) {
             <div class="flex items-center text-orange-600">
-              {{ CLOCK }}{{ task().completedDate | dateFormatter }}
+              {{ CLOCK }}{{ task().dueDate | dateFormatter }}
             </div>
           }
         </div>
