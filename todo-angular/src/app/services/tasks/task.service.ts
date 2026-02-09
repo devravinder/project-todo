@@ -37,7 +37,7 @@ export class TaskService {
   private async onDataChange(tasks: Task[], config: TodoConfig) {
     const activeProject = this.projectService.activeProject();
 
-    if (activeProject && tasks.length) {
+    if (activeProject) {
       await writeToStore(tasks, config, activeProject?.fileHandle, activeProject?.type);
     }
   }
