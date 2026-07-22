@@ -27,13 +27,13 @@ const Header: React.FC<HeaderProps> = ({
               <img src="./favicon.png" />
             </span>
           </div>
-          <h1 className="text-xl font-semibold text-foreground">{activeProject.name}</h1>
+          <h1 className="text-xl font-semibold text-foreground hidden sm:block">{activeProject.name}</h1>
         </div>
 
         <div className="flex items-center space-x-2">
           <button
             onClick={onNewTask}
-            className=" cursor-pointer inline-flex items-center px-3 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary-dark focus:outline-none focus:ring-none transition-colors"
+            className="hidden sm:inline-flex cursor-pointer items-center px-3 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary-dark focus:outline-none focus:ring-none transition-colors"
           >
             {ADD} New Task
           </button>

@@ -17,11 +17,11 @@ import { ProjectService } from '../../services/project/project.service';
             <img src="./favicon.png" />
           </span>
         </div>
-        <h1 class="text-xl font-semibold text-foreground">{{projectName()}}</h1>
+        <h1 class="text-xl font-semibold text-foreground hidden sm:block">{{projectName()}}</h1>
       </div>
 
       <div class="flex items-center space-x-2">
-        <app-button-primary [routerLink]="['', NEW]" [label]="ADD + ' New Task'" />
+        <app-button-primary class="hidden sm:block" [routerLink]="['', NEW]" [label]="ADD + ' New Task'" />
         <app-button [routerLink]="['', 'projects']" [label]="FOLDER" />
         <app-button [routerLink]="['', 'archive']" [label]="ARCHIVE" />
         <app-button [routerLink]="['', 'settings']" [label]="SETTINGS" />
