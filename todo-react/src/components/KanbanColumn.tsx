@@ -25,18 +25,18 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
   onDragStart,
 }) => {
   return (
-    <div className="flex flex-col h-fit shrink-0 w-80 rounded-lg border border-slate-300">
-      <div className="sticky flex items-center justify-between bg-white rounded-t-lg p-4 border-b border-slate-300">
+    <div className="flex flex-col h-fit shrink-0 w-80 rounded-lg border border-border">
+      <div className="sticky flex items-center justify-between bg-secondary rounded-t-lg p-4 border-b border-border">
         <div className="flex items-center space-x-2">
-          <h2 className="font-semibold text-slate-800">{title}</h2>
-          <span className="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full">
+          <h2 className="font-semibold text-foreground">{title}</h2>
+          <span className="bg-secondary-dark text-muted-foreground text-xs px-2 py-1 rounded-full">
             {tasks.length}
           </span>
         </div>
         {allowCreation && (
           <button
             onClick={onNewTask}
-            className="text-slate-400 hover:text-slate-600 cursor-pointer"
+            className="text-muted-foreground hover:text-foreground cursor-pointer"
           >
             {ADD}
           </button>
@@ -59,11 +59,11 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
         ))}
 
         {tasks.length === 0 && (
-          <div className="text-center py-8 text-slate-400">
+          <div className="text-center py-8 text-muted-foreground">
             <p className="text-sm">No tasks yet</p>
             <button
               onClick={onNewTask}
-              className="text-blue-600 hover:text-blue-700 text-sm mt-1"
+              className="text-primary hover:text-primary-dark text-sm mt-1"
             >
               Add your first task
             </button>

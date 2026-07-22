@@ -1,9 +1,8 @@
 import { useState } from "react";
-import type { Project } from "../../hooks/state-hooks/useProject";
 import useProject from "../../hooks/state-hooks/useProject";
 import { useAppForm } from "../../hooks/useAppForm";
 import useFileHandle from "../../hooks/useFileHandler";
-import { ADD, MINUS } from "../../util/icons";
+import { ADD, FOLDER, MINUS, STORE } from "../../util/icons";
 
 export type ProjectFormData = {
   activeProjectId: string;
@@ -17,7 +16,7 @@ type FormProps = {
 };
 
 export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
-  const { getSampleNewProject, deleteProject } = useProject();
+  const { getSampleNewProject, getSampleNewMemoryProject, deleteProject } = useProject();
   const [error, setError] = useState("");
 
   const form = useAppForm({
@@ -42,7 +41,7 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
       let isExists = false;
 
       for (const item of previous) {
-        if (await item.fileHandle.isSameEntry(fileHandleResult.handle)) {
+        if (item.fileHandle && (await item.fileHandle.isSameEntry(fileHandleResult.handle))) {
           isExists = true;
           break;
         }
@@ -58,6 +57,14 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
         getSampleNewProject(fileHandleResult.handle),
       ]);
     }
+  };
+
+  const onNewMemoryProjectClick = () => {
+    setError("");
+    form.setFieldValue("projects", (prev) => [
+      ...prev,
+      getSampleNewMemoryProject(),
+    ]);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -87,7 +94,7 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
                       <div className="w-full flex flex-col gap-4 px-2">
                         <label
                           htmlFor={field.name}
-                          className="block text-sm font-medium text-slate-700"
+                          className="block text-sm font-medium text-foreground/80"
                         >
                           Active Project
                         </label>
@@ -97,7 +104,7 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
                             name={field.name}
                             value={field.state.value}
                             onChange={(e) => field.handleChange(e.target.value)}
-                            className="grow px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                            className="grow px-3 py-2 border border-muted-foreground/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/70 focus:border-transparent"
                           >
                             {projects.map((item) => (
                               <option key={item.id} value={item.id}>
@@ -110,15 +117,25 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
                             onClick={onNewProjectClick}
                             disabled={isOpening}
                             type="button"
-                            className="px-4 py-2 bg-blue-600 cursor-pointer disabled:cursor-not-allowed text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-none"
+                            title="Add local folder project"
+                            className="px-4 py-2 bg-primary cursor-pointer disabled:cursor-not-allowed text-primary-foreground rounded-lg hover:bg-primary-dark focus:outline-none focus:ring-none"
                           >
                             {isOpening ? (
                               <span className="animate-spin inline-block">
                                 {ADD}
                               </span>
                             ) : (
-                              <span>{ADD}</span>
+                              <span>{FOLDER}{ADD}</span>
                             )}
+                          </button>
+
+                          <button
+                            onClick={onNewMemoryProjectClick}
+                            type="button"
+                            title="Add browser storage project"
+                            className="px-4 py-2 bg-secondary-dark cursor-pointer text-foreground rounded-lg hover:bg-secondary-darker focus:outline-none focus:ring-none"
+                          >
+                            <span>{STORE}{ADD}</span>
                           </button>
                         </div>
                       </div>
@@ -139,7 +156,7 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
             <div>
               <label
                 htmlFor={"projects[0]"}
-                className="block text-sm font-medium text-slate-700 p-2"
+                className="block text-sm font-medium text-foreground/80 p-2"
               >
                 Projects
               </label>
@@ -153,7 +170,13 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
                             {(subField) => {
                               const project = subField.state.value;
                               return (
-                                <div className="flex flex-row gap-2 p-2">
+                                <div className="flex flex-row gap-2 p-2 items-center">
+                                  <span
+                                    className="text-sm shrink-0"
+                                    title={project.env === "MEMORY" ? "Browser storage" : "Local folder"}
+                                  >
+                                    {project.env === "MEMORY" ? STORE : FOLDER}
+                                  </span>
                                   <input
                                     name={subField.name}
                                     type="text"
@@ -165,7 +188,7 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
                                       })
                                     }
                                     onKeyDown={onKeyDown}
-                                    className="grow px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="grow px-3 py-2 border border-muted-foreground/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/70 focus:border-transparent"
                                   />
                                   <button
                                     type="button"
@@ -176,7 +199,7 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
                                       await deleteProject(project.id)
                                       field.removeValue(i);
                                     }}
-                                    className="cursor-pointer px-4 py-2 text-red-500 disabled:cursor-not-allowed disabled:bg-gray-300 bg-red-100 hover:bg-red-200 rounded-lg"
+                                    className="cursor-pointer px-4 py-2 text-red-500 disabled:cursor-not-allowed disabled:bg-muted-foreground bg-red-100 hover:bg-red-200 rounded-lg"
                                   >
                                     {MINUS}
                                   </button>
@@ -187,7 +210,7 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
                         );
                       })}
                       {field.state.value.length === 0 && (
-                        <div className="text-center py-8 text-slate-400">
+                        <div className="text-center py-8 text-muted-foreground">
                           <p className="text-sm">
                             No {field.name.toLowerCase()} configured
                           </p>
@@ -199,17 +222,17 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
               </form.Field>
             </div>
 
-            
+
           </div>
         </div>
       </div>
 
-      <div className="flex gap-4 py-4 px-4 items-end justify-between border-t border-slate-200">
+      <div className="flex gap-4 py-4 px-4 items-end justify-between border-t border-border">
         <div className="flex flex-row gap-4">
           <button
             type="button"
             onClick={onCancel}
-            className="cursor-pointer px-4 py-2 bg-slate-200 te-600xt-slate-700 rounded-md hover:bg-slate-300"
+            className="cursor-pointer px-4 py-2 bg-secondary-dark text-muted-foreground rounded-md hover:bg-secondary-darker"
           >
             Cancel
           </button>
@@ -218,13 +241,13 @@ export default function ProjectForm({ onCancel, data, onSave }: FormProps) {
           <button
             type="button"
             onClick={() => form.reset()}
-            className="cursor-pointer px-4 py-2 bg-slate-200 text-slate-700 rounded-md hover:bg-slate-300"
+            className="cursor-pointer px-4 py-2 bg-secondary-dark text-muted-foreground rounded-md hover:bg-secondary-darker"
           >
             Reset
           </button>
           <button
             type="submit"
-            className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="cursor-pointer px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary-dark"
           >
             Save
           </button>

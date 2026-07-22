@@ -23,7 +23,7 @@ const ArrayFields = withForm({
     };
     return (
       <div className="pl-6 pr-8 py-4 flex-1 min-w-sm overflow-auto flex flex-col gap-2">
-        <h3 className="px-2 text-lg font-medium text-slate-800">
+        <h3 className="px-2 text-lg font-medium text-foreground">
           Manage {label}
         </h3>
 
@@ -61,7 +61,7 @@ const ArrayFields = withForm({
                                 subField.handleChange(e.target.value)
                               }
                               onKeyDown={onKeyDown}
-                              className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="flex-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/70 focus:border-transparent"
                             />
                             <button
                               type="button"
@@ -85,7 +85,7 @@ const ArrayFields = withForm({
                   );
                 })}
                 {field.state.value.length === 0 && (
-                  <div className="text-center py-8 text-slate-400">
+                  <div className="text-center py-8 text-muted-foreground">
                     <p className="text-sm">
                       No {field.name.toLowerCase()} configured
                     </p>

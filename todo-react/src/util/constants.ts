@@ -60,18 +60,18 @@ export const defaultConfig: TodoConfig = {
 
 export const welcomeData = {
   header: `Welcome! 👋`,
-  subTitle: `Select the folder containing your todo file (todo.md or todo.json)`,
+  subTitle: `Choose a local folder (todo.md / todo.json) or store your tasks right in this browser`,
 
   notes: {
     header: "💡 How does it work?",
     items: [
-      `Click "Get Started" above`,
-      `Select the folder containing your todo file`,
-      `The app automatically loads your task file`,
+      `"Use Local Folder" saves to a todo.md/todo.json file you pick (desktop browsers only)`,
+      `"Use Browser Storage" saves to this browser's IndexedDB — works on mobile too`,
+      `The app automatically loads your tasks on return visits`,
       `Manage your tasks visually with Kanban`,
-      `Changes are saved to todo file`,
+      `You can add more projects of either kind later, or reset everything from Settings`,
     ],
-    footer: `⚠️ Supported browsers: Chrome 86+, Edge 86+, Opera 72+`,
+    footer: `⚠️ Local Folder requires: Chrome 86+, Edge 86+, Opera 72+`,
   },
 };
 

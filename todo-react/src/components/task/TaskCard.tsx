@@ -29,26 +29,26 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, isDragging }) => {
   return (
     <div
       onClick={onTaskClick}
-      className={`cursor-pointer flex flex-col gap-6 bg-white rounded-lg border border-slate-200 p-4 hover:shadow-md transition-shadow ${
+      className={`cursor-pointer flex flex-col gap-6 bg-secondary rounded-lg border border-border p-4 hover:shadow-md transition-shadow ${
         isDragging ? "opacity-50 rotate-2" : ""
       }`}
     >
       <div className="flex flex-col gap-1">
         <div className="flex flex-row justify-between">
-          <span className="text-xs text-slate-500 line-clamp-1">
+          <span className="text-xs text-muted-foreground line-clamp-1">
             #{task.Id}
           </span>
           <button onClick={onTaskClick} className="cursor-pointer text-xs">
             {EDIT}
           </button>
         </div>
-        <h3 className="font-medium text-slate-800 text-md leading-tight line-clamp-1 flex-1">
+        <h3 className="font-medium text-foreground text-md leading-tight line-clamp-1 flex-1">
           {task.Title}
         </h3>
       </div>
 
       {task.Description && (
-        <p className="text-sm text-slate-500 line-clamp-3">
+        <p className="text-sm text-muted-foreground line-clamp-3">
           {task.Description}
         </p>
       )}
@@ -84,7 +84,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, isDragging }) => {
             </span>
           )) : undefined}
           {task.Tags.length > 3 && (
-            <span className="text-xs text-slate-500">
+            <span className="text-xs text-muted-foreground">
               +{task.Tags.length - 3}
             </span>
           )}
@@ -92,9 +92,9 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, isDragging }) => {
 
         {totalSubtasks > 0 && (
           <div className="flex flex-row items-center gap-2">
-            <div className="flex-1 bg-slate-200 rounded-full h-1">
+            <div className="flex-1 bg-secondary-dark rounded-full h-1">
               <div
-                className="bg-blue-600 h-full rounded-full transition-all"
+                className="bg-primary h-full rounded-full transition-all"
                 style={{
                   width: `${
                     totalSubtasks > 0
@@ -104,13 +104,13 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, isDragging }) => {
                 }}
               />
             </div>
-            <span className="text-xs text-slate-600">
+            <span className="text-xs text-muted-foreground">
               {completedSubtasks}/{totalSubtasks}
             </span>
           </div>
         )}
 
-        <div className="flex items-center justify-between text-xs text-slate-500">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center">
             {CALENDER} {dayjs(task.createdDate).format(DATE_FORMAT)}
           </div>

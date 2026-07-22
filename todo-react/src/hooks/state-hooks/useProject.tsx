@@ -10,15 +10,10 @@ import {
 } from "react";
 import Welcome from "../../components/Welcome";
 import type { AppData } from "../../util/converter";
-import {
-  readFromStore,
-  writeToStore,
-  type FileError,
-  type FileReadResult,
-} from "../../util/syncStore";
-import { useIndexedDB } from "../useIndexDB";
-import { useSessionId } from "../useSessionId";
-import { IndexedDb } from "../../util/IndexedDb";
+import { defaultConfig } from "../../util/constants";
+import { readFromStore, writeToStore, type FileError } from "../../util/syncStore";
+import { getId } from "../../util/common";
+import db from "../../util/db";
 import type { FileHandleResult } from "../../util/FileHandler";
 import Loading from "../../components/Loading";
 
@@ -31,27 +26,14 @@ type ProjectContextType = {
     config: TodoConfig
   ) => Promise<void>;
   getSampleNewProject: (fileHandle: FileSystemFileHandle) => Project;
+  getSampleNewMemoryProject: (name?: string) => Project;
   getProjects: () => Promise<Project[]>;
   switchActiveProject: (project: Project) => void;
-  updateProject: (project: Project) => Promise<IDBValidKey>;
-  deleteProject: (id: string) => Promise<void>
+  updateProject: (project: Project) => Promise<string>;
+  deleteProject: (id: string) => Promise<void>;
 };
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
-
-export type Project = {
-  id: string;
-  name: string;
-  fileHandle: FileSystemFileHandle;
-  lastAccessed: number;
-  env: "CLOUD" | "LOCAL";
-  type: FileFormat;
-  sessionId?: string;
-};
-
-const DB_NAME = "todo-db";
-const STORE_INSTANCE_NAME = "projects";
-const ID_KEY_NAME = "id";
 
 export const ProjectContextProvider = ({
   children,
@@ -64,62 +46,57 @@ export const ProjectContextProvider = ({
   const [appData, setAppData] = useState<AppData>();
   const [fileError, setFileError] = useState<FileError>();
 
-  const sessionId = useSessionId();
-
-  const db = useIndexedDB<Project>({
-    name: DB_NAME,
-    version: 1,
-    stores: [
-      {
-        name: STORE_INSTANCE_NAME,
-        keyPath: ID_KEY_NAME,
-      },
-    ],
-  });
-
   const updateProjectData = async (
     project: Project,
     tasks: Task[],
     config: TodoConfig
   ) => {
-    await writeToStore(tasks, config, project.fileHandle, project.type);
+    await writeToStore(tasks, config, project);
   };
 
-  const getSampleNewProject = (fileHandle: FileSystemFileHandle) => {
-    const id = crypto.randomUUID();
-    const project: Project = {
+  const getSampleNewProject = (fileHandle: FileSystemFileHandle): Project => {
+    const id = getId(4);
+    return {
       id,
-      name: `Todo-${id.slice(0,3)}`,
+      name: `Todo-${id}`,
       type: fileHandle.name.includes(".md") ? "md" : "json",
       fileHandle,
       env: "LOCAL",
       lastAccessed: new Date().getTime() - 1,
     };
-    return project;
   };
 
-  const getProjects = async () =>
-    IndexedDb.getProjects(db, STORE_INSTANCE_NAME);
-
-  const updateProject = async (project: Project) =>
-    IndexedDb.updateProject(db, STORE_INSTANCE_NAME, project);
-
-
-  const deleteProject=async(id:string)=>IndexedDb.deleteProject(db,STORE_INSTANCE_NAME,id)
-
-  const readProjectData = async (project: Project): Promise<FileReadResult> => {
-    const data = await readFromStore(project.fileHandle, project.type);
-    return data;
+  const getSampleNewMemoryProject = (name?: string): Project => {
+    const id = getId(4);
+    return {
+      id,
+      name: name || `Todo-${id}`,
+      env: "MEMORY",
+      lastAccessed: new Date().getTime() - 1,
+    };
   };
+
+  const getProjects = async () => db.projects.orderBy("lastAccessed").toArray();
+
+  const updateProject = async (project: Project) => db.projects.put(project);
+
+  const deleteProject = async (id: string) => {
+    await db.taskData.delete(id);
+    await db.projects.delete(id);
+  };
+
+  const readProjectData = async (project: Project) => readFromStore(project);
 
   const onNewProjectSelect = async (fileHandle: FileSystemFileHandle) => {
-    const project: Project = {
-      ...getSampleNewProject(fileHandle),
-      id: sessionId,
-      sessionId,
-      lastAccessed: new Date().getTime()
-    };
-    await IndexedDb.addProject(db, STORE_INSTANCE_NAME, project);
+    const project: Project = getSampleNewProject(fileHandle);
+    await db.projects.add(project);
+    setActiveProject(project);
+  };
+
+  const onNewMemoryProjectSelect = async () => {
+    const project: Project = getSampleNewMemoryProject();
+    await db.projects.add(project);
+    await db.taskData.put({ projectId: project.id, tasks: [], config: defaultConfig });
     setActiveProject(project);
   };
 
@@ -130,19 +107,17 @@ export const ProjectContextProvider = ({
         project &&
         (error?.name === "NotFoundError" || error?.name === "NotAllowedError")
       ) {
-        await IndexedDb.deleteProject(db, STORE_INSTANCE_NAME, project.id);
+        await deleteProject(project.id);
       }
     },
-    [setFileError, db]
+    []
   );
 
-  const switchActiveProject=async(project:Project)=>{
-
-        project.lastAccessed = new Date().getTime()
-        setActiveProject(pre=>({...pre, ...project}));
-        await updateProject(project);
-  }
-
+  const switchActiveProject = async (project: Project) => {
+    project.lastAccessed = new Date().getTime();
+    setActiveProject((pre) => ({ ...pre, ...project }));
+    await updateProject(project);
+  };
 
   const onGetStarted = (fileHandleResult: FileHandleResult) => {
     setFileError(undefined);
@@ -151,48 +126,54 @@ export const ProjectContextProvider = ({
     else onProjectFileError(fileHandleResult.error);
   };
 
-  
+  const onUseMemory = () => {
+    setFileError(undefined);
+    onNewMemoryProjectSelect();
+  };
+
   useEffect(() => {
     const syncState = async (project: Project) => {
       setLoading(true);
       const result = await readProjectData(project);
       if ("data" in result) {
         setAppData(result.data);
-      }
-      else {
+      } else {
         onProjectFileError(result.error, project);
       }
       setLoading(false);
     };
     if (activeProject) syncState(activeProject);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeProject]);
 
   useLayoutEffect(() => {
     const getLatestProject = async () => {
-      setInitialLoading(true)
-      const projects = await IndexedDb.getProjects(db, STORE_INSTANCE_NAME);
+      setInitialLoading(true);
+      const projects = await getProjects();
       if (projects.length) {
         const lastAccessed = projects.sort(
           (f, s) => s.lastAccessed - f.lastAccessed
         )[0];
         switchActiveProject(lastAccessed);
       }
-      setInitialLoading(false)
+      setInitialLoading(false);
     };
 
     getLatestProject();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
-  if(initialLoading || loading || (activeProject && !fileError && !appData) )
-     return <Loading/>;
 
-  if (!activeProject || fileError || !appData )
-    return <Welcome fileError={fileError} onGetStarted={onGetStarted} />;
+  if (initialLoading || loading || (activeProject && !fileError && !appData))
+    return <Loading />;
 
-
-
+  if (!activeProject || fileError || !appData)
+    return (
+      <Welcome
+        fileError={fileError}
+        onGetStarted={onGetStarted}
+        onUseMemory={onUseMemory}
+      />
+    );
 
   return (
     <ProjectContext.Provider
@@ -200,6 +181,7 @@ export const ProjectContextProvider = ({
         activeProject,
         updateProjectData,
         getSampleNewProject,
+        getSampleNewMemoryProject,
         getProjects,
         switchActiveProject,
         updateProject,
@@ -225,9 +207,9 @@ export default function useProject() {
 export const WithActiveProjectData = ({
   children,
 }: {
-  children: (data: AppData) => React.ReactNode;
+  children: (data: AppData, activeProject: Project) => React.ReactNode;
 }) => {
-  const { appData } = useProject();
+  const { appData, activeProject } = useProject();
 
-  return children(appData);
+  return children(appData, activeProject);
 };

@@ -1,68 +1,17 @@
-import { defaultConfig } from "./constants";
-import {
-  toAppData,
-  toStoreData,
-  type AppData,
-  type StoreData,
-} from "./converter";
-import { FileHandler } from "./FileHandler";
-import { MarkdownParser } from "./MarkdownParser";
+import { fileStorageAdapter } from "./storage/file-storage.adapter";
+import { memoryStorageAdapter } from "./storage/memory-storage.adapter";
+import type { FileReadResult, StorageAdapter } from "./storage/storage.types";
 
-const MD_COMMENT = `
----
-To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)
-`;
+export type { FileError, FileReadResult } from "./storage/storage.types";
 
-export type FileError = {
-  name:
-    | "AbortError"
-    | "NotFoundError"
-    | "BrowserNotSupports"
-    | "NotAllowedError";
-  message: string;
-};
+const getAdapter = (project: Project): StorageAdapter =>
+  project.env === "MEMORY" ? memoryStorageAdapter : fileStorageAdapter;
 
-export const writeToStore = async (
+export const readFromStore = (project: Project): Promise<FileReadResult> =>
+  getAdapter(project).read(project);
+
+export const writeToStore = (
   tasks: Task[],
   config: TodoConfig,
-  fileHandle: FileSystemFileHandle,
-  format: FileFormat
-) => {
-  const storeData = toStoreData(tasks, config);
-
-  const content =
-    format === "md"
-      ? MarkdownParser.toMarkdown(storeData as unknown as JSONObject)
-      : JSON.stringify(storeData, null, 2);
-
-  await FileHandler.write(fileHandle, content + MD_COMMENT);
-};
-
-export type FileReadResult =
-  | {
-      data: AppData;
-    }
-  | { error: FileError };
-
-export const readFromStore = async (
-  fileHandle: FileSystemFileHandle,
-  format: FileFormat
-): Promise<FileReadResult> => {
-  try {
-    const content = await FileHandler.read(fileHandle);
-
-    if (!content) return { data: { config: defaultConfig, tasks: [] } };
-
-    const storeData = (
-      format === "md" ? MarkdownParser.toJson(content) : JSON.parse(content)
-    ) as StoreData;
-
-    const data = toAppData(storeData);
-
-    return { data };
-  } catch (err) {
-    // File might be deleted
-    const error = err as FileError;
-    return { error };
-  }
-};
+  project: Project
+): Promise<void> => getAdapter(project).write(tasks, config, project);

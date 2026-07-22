@@ -1,13 +1,13 @@
 
 const Skeleton = ({ className = "" }: { className?: string }) => (
   <div
-    className={`animate-pulse bg-slate-200 rounded ${className}`}
+    className={`animate-pulse bg-secondary-dark rounded ${className}`}
   />
 );
 
 const HeaderLoader = () => {
   return (
-    <header className="w-full bg-white border-b border-slate-200 px-4 py-3">
+    <header className="w-full bg-secondary border-b border-border px-4 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-3">
@@ -28,9 +28,9 @@ const HeaderLoader = () => {
 
 const ColumnLoader = () => {
   return (
-    <div className="flex flex-col shrink-0 w-80 rounded-lg border border-slate-300 bg-white">
+    <div className="flex flex-col shrink-0 w-80 rounded-lg border border-border bg-secondary">
       {/* Column header */}
-      <div className="p-4 border-b border-slate-300">
+      <div className="p-4 border-b border-border">
         <Skeleton className="h-5 w-32" />
       </div>
 
@@ -39,7 +39,7 @@ const ColumnLoader = () => {
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="p-3 border border-slate-300 rounded-lg space-y-2"
+            className="p-3 border border-border rounded-lg space-y-2"
           >
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="h-3 w-full" />

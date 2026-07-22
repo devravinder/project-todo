@@ -38,12 +38,12 @@ export class TaskService {
     const activeProject = this.projectService.activeProject();
 
     if (activeProject) {
-      await writeToStore(tasks, config, activeProject?.fileHandle, activeProject?.type);
+      await writeToStore(tasks, config, activeProject);
     }
   }
 
   readProjectData = async (project: Project) => {
-    const result = await readFromStore(project.fileHandle, project.type);
+    const result = await readFromStore(project);
     if ('data' in result) {
       const { tasks, config } = result.data;
       this.tasks.set(tasks);

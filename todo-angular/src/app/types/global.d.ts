@@ -50,12 +50,18 @@ declare global {
   interface Project {
     id: string;
     name: string;
-    fileHandle: FileSystemFileHandle;
+    fileHandle?: FileSystemFileHandle;
     lastAccessed: number;
-    env: 'CLOUD' | 'LOCAL';
-    type: FileFormat;
+    env: 'CLOUD' | 'LOCAL' | 'MEMORY';
+    type?: FileFormat;
     sessionId?: string;
     path?: string;
+  }
+
+  interface StoredTaskData {
+    projectId: string;
+    tasks: Task[];
+    config: TodoConfig;
   }
   interface Task {
     Id?: string;

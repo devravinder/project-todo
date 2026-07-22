@@ -15,3 +15,5 @@ export const JSON_TYPE = '{ }'
 export const MD_TYPE = '🇲 🇩'
 export const LOADING="⏳"
 export const WAVE_HAND="👋"
+export const SUN = "🔆"
+export const MOON = "⏾"

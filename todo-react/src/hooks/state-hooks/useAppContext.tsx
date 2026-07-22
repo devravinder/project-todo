@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import useProject from "./useProject";
+import { getId } from "../../util/common";
 
 type ActiveModal = "TASK" | "ARCHIVE" | "SETTINGS" | "PROJECT" | undefined;
 
@@ -63,7 +64,7 @@ export const AppContextProvider = ({ children, defaultConfig, defauleTasks }: { 
       ...prev,
       {
         ...task,
-        Id: `000${tasks.length + 1}`.slice(-3),
+        Id: getId(4),
         createdDate: new Date(),
       },
     ]);

@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import db from '../../util/db';
 import { getId } from '../../util/common';
+import { defaultConfig } from '../../util/constants';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -30,11 +31,29 @@ export class ProjectService {
     this.activeProject.set(project);
   };
 
+  getSampleNewMemoryProject = (name?: string): Project => {
+    const id = getId(4);
+    return {
+      id,
+      name: name || `Todo-${id}`,
+      env: 'MEMORY',
+      lastAccessed: new Date().getTime() - 1,
+    };
+  };
+
+  onNewMemoryProjectSelect = async () => {
+    const project: Project = this.getSampleNewMemoryProject();
+    await this.addProject(project);
+    await db.taskData.put({ projectId: project.id, tasks: [], config: defaultConfig });
+    this.activeProject.set(project);
+  };
+
   async addProject(project: Project) {
     return db.projects.add(project);
   }
 
   async deleteProject(id: string) {
+    await db.taskData.delete(id)
     return db.projects.delete(id);
   }
   updateProject = async (project: Project) => db.projects.put(project);

@@ -38,6 +38,22 @@ declare global {
     "text-color": string;
     "bg-color": string;
   }
+
+  interface StoredTaskData {
+    projectId: string;
+    tasks: Task[];
+    config: TodoConfig;
+  }
+
+  interface Project {
+    id: string;
+    name: string;
+    fileHandle?: FileSystemFileHandle;
+    lastAccessed: number;
+    env: "CLOUD" | "LOCAL" | "MEMORY";
+    type?: FileFormat;
+    path?: string;
+  }
   interface TodoConfig {
     Statuses: string[];
     "Workflow Statuses": Record<string, string>;

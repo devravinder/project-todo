@@ -1,4 +1,4 @@
-import type { FileError } from "./syncStore";
+import type { FileError } from "./storage/storage.types";
 
 const MARKDOWN_FILE = "todo.md";
 const JSON_FILE = "todo.json";

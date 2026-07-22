@@ -8,7 +8,7 @@ export const WordFlowStatuses = withFieldGroup({
     
     return (
       <div className="pl-6 pr-8 py-4 flex-1 min-w-sm overflow-auto flex flex-col gap-2">
-        <h3 className="px-2 text-lg font-medium text-slate-800">
+        <h3 className="px-2 text-lg font-medium text-foreground">
           Manage Workflow
         </h3>
         <div className="flex flex-col gap-4 max-h-72 p-4 overflow-y-auto">
@@ -22,7 +22,7 @@ export const WordFlowStatuses = withFieldGroup({
                   <div>
                     <label
                       htmlFor={field.name}
-                      className="block text-sm font-medium text-slate-700 mb-2"
+                      className="block text-sm font-medium text-foreground/80 mb-2"
                     >
                       {key}
                     </label>
@@ -31,7 +31,7 @@ export const WordFlowStatuses = withFieldGroup({
                       name={field.name}
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/70 focus:border-transparent"
                     >
                       <option value="">Unassigned</option>
                       {config.Statuses.map((value) => (

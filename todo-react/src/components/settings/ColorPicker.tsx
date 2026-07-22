@@ -24,7 +24,7 @@ export const ColorPicker = memo(({ label, value, onChange }: ColorPickerProps) =
   return (
     <div className="flex flex-col gap-2 min-w-0">
       <span>{label}</span>
-      <div className="flex flex-row gap-2 items-center justify-between px-4 py-2 rounded-md border border-slate-300 focus-within:ring-2 focus-within:ring-blue-500 min-w-0">
+      <div className="flex flex-row gap-2 items-center justify-between px-4 py-2 rounded-md border border-border focus-within:ring-2 focus-within:ring-primary/70 min-w-0">
         <input
           type="color"
           value={value}

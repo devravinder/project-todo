@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ProjectService } from '../../services/project/project.service';
 import { FileHandleService } from '../../services/util/file-handle/file-handle.service';
 import { fileErrorMessages, welcomeData } from '../../util/constants';
-import { FOLDER, LOADING } from '../../util/icons';
+import { FOLDER, LOADING, STORE } from '../../util/icons';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,18 +18,30 @@ import { Router } from '@angular/router';
         </h2>
 
         <div class="flex flex-col gap-4 w-full">
-          <div class="flex justify-center">
+          <div class="flex flex-wrap justify-center gap-4">
             <button
               (click)="onClick()"
-              [disabled]="isOpening()"
-              class="cursor-pointer disabled:cursor-not-allowed rounded-lg w-56 px-12 py-3 bg-primary text-accent"
+              [disabled]="isOpening() || !isFileSystemSupported"
+              [title]="
+                isFileSystemSupported ? '' : 'Your browser does not support local folder storage'
+              "
+              class="cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 rounded-lg w-56 px-12 py-3 bg-primary text-accent"
             >
               @if (isOpening()) {
                 <span class="inline-block animate-spin">{{ LOADING }}</span>
               } @else {
                 <span>{{ FOLDER }}</span>
               }
-              Get Started
+              Use Local Folder
+            </button>
+
+            <button
+              (click)="onMemoryClick()"
+              [disabled]="isOpening()"
+              class="cursor-pointer disabled:cursor-not-allowed rounded-lg w-56 px-12 py-3 bg-secondary-dark text-foreground"
+            >
+              <span>{{ STORE }}</span>
+              Use Browser Storage
             </button>
           </div>
 
@@ -88,6 +100,9 @@ export class Welcome {
 
   FOLDER = FOLDER;
   LOADING = LOADING;
+  STORE = STORE;
+
+  isFileSystemSupported = 'showDirectoryPicker' in window;
 
   async onClick() {
     this.fileError.set(undefined);
@@ -99,6 +114,12 @@ export class Welcome {
       this.fileError.set(result.error);
       this.projectService.onProjectFileError(result.error);
     }
+  }
+
+  async onMemoryClick() {
+    this.fileError.set(undefined);
+    await this.projectService.onNewMemoryProjectSelect();
+    this.router.navigate(['', '']);
   }
 }
 

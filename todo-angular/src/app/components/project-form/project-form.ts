@@ -2,7 +2,7 @@ import { Component, inject, input, linkedSignal, output, signal } from '@angular
 import { ProjectService } from '../../services/project/project.service';
 import { FileHandleService } from '../../services/util/file-handle/file-handle.service';
 import { form, FormField } from '@angular/forms/signals';
-import { ADD, MINUS } from '../../util/icons';
+import { ADD, FOLDER, MINUS, STORE } from '../../util/icons';
 
 export interface ProjectFormData {
   activeProjectId: string;
@@ -38,13 +38,23 @@ export interface ProjectFormData {
                     (click)="onNewProjectClick()"
                     [disabled]="isOpening()"
                     type="button"
+                    title="Add local folder project"
                     class="px-4 py-2 bg-primary cursor-pointer disabled:cursor-not-allowed text-accent-foreground rounded-lg hover:bg-primary-dark focus:outline-none focus:ring-none"
                   >
                     @if (isOpening()) {
                       <span class="animate-spin inline-block">{{ADD}}</span>
                     } @else {
-                      <span>{{ADD}}</span>
+                      <span>{{FOLDER}}{{ADD}}</span>
                     }
+                  </button>
+
+                  <button
+                    (click)="onNewMemoryProjectClick()"
+                    type="button"
+                    title="Add browser storage project"
+                    class="px-4 py-2 bg-secondary-dark cursor-pointer text-foreground rounded-lg hover:bg-secondary-darker focus:outline-none focus:ring-none"
+                  >
+                    <span>{{STORE}}{{ADD}}</span>
                   </button>
                 </div>
               </div>
@@ -66,7 +76,13 @@ export interface ProjectFormData {
                   Projects
                 </label>
                 @for (project of formData().projects; track project.id; let i = $index) {
-                  <div class="flex flex-row gap-2 p-1">
+                  <div class="flex flex-row gap-2 p-1 items-center">
+                    <span
+                      class="text-sm shrink-0"
+                      [title]="project.env === 'MEMORY' ? 'Browser storage' : 'Local folder'"
+                    >
+                      {{ project.env === 'MEMORY' ? STORE : FOLDER }}
+                    </span>
                     <input
                       [formField]="form.projects[i].name"
                       type="text"
@@ -133,6 +149,8 @@ export class ProjectForm {
 
   ADD = ADD
   MINUS = MINUS
+  FOLDER = FOLDER
+  STORE = STORE
   // Inputs/Outputs
   data = input.required<ProjectFormData>();
   readonly formData = linkedSignal(() => this.data());
@@ -183,6 +201,12 @@ export class ProjectForm {
     } finally {
       this.isOpening.set(false);
     }
+  }
+
+  onNewMemoryProjectClick() {
+    this.error.set('');
+    const newProject = this.projectService.getSampleNewMemoryProject();
+    this.form.projects().value.update((pre) => [...pre, newProject]);
   }
 
   async onDeleteProject(index: number) {

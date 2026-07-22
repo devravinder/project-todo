@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import useProject, { type Project } from "../../hooks/state-hooks/useProject";
+import { useLiveQuery } from "dexie-react-hooks";
+import useProject from "../../hooks/state-hooks/useProject";
+import db from "../../util/db";
 import { CLOSE } from "../../util/icons";
 import ProjectForm, { type ProjectFormData } from "./ProjectForm";
 
@@ -10,12 +11,15 @@ interface ProjectModalProps {
 const ProjectModal = ({ onClose }: ProjectModalProps) => {
   const {
     activeProject,
-    getProjects,
     switchActiveProject: setActiveProject,
     updateProject: updateProejct,
   } = useProject();
 
-  const [projects, setProjects] = useState<Project[]>([]);
+  const projects = useLiveQuery(
+    () => db.projects.orderBy("lastAccessed").toArray(),
+    [],
+    []
+  );
 
   const handleClose = () => {
     onClose();
@@ -44,24 +48,16 @@ const ProjectModal = ({ onClose }: ProjectModalProps) => {
     onClose();
   };
 
-  useEffect(() => {
-    const syncProjects = async () => {
-      const projects = await getProjects();
-      setProjects(projects);
-    };
-    syncProjects();
-  }, [getProjects]);
-
   return (
     <div className="fixed inset-0 bg-gray-400/30 backdrop-blur flex items-center justify-center p-4 z-50">
-      <div className="flex flex-col bg-white rounded-lg w-full h-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-800">
+      <div className="flex flex-col bg-secondary rounded-lg w-full h-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-6 border-b border-border">
+          <h2 className="text-lg font-semibold text-foreground">
             Manage Projects
           </h2>
           <button
             onClick={handleClose}
-            className="text-slate-400 hover:text-slate-600 focus:outline-none"
+            className="text-muted-foreground hover:text-foreground focus:outline-none"
           >
             {CLOSE}
           </button>
@@ -70,7 +66,7 @@ const ProjectModal = ({ onClose }: ProjectModalProps) => {
         <div className="grow">
           <ProjectForm
             onSave={onSave}
-            data={{ activeProjectId: activeProject.id, projects }}
+            data={{ activeProjectId: activeProject.id, projects: projects ?? [] }}
             onCancel={handleClose}
           />
         </div>

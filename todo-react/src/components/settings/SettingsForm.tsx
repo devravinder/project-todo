@@ -46,7 +46,7 @@ export default function SettingsForm({
       }}
     >
       <div className="flex">
-        <div className="w-48 border-r border-slate-200">
+        <div className="w-48 border-r border-border">
           <nav className="p-4 space-y-1">
             {tabs.map((tab) => (
               <button
@@ -57,8 +57,8 @@ export default function SettingsForm({
                 }
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab.name === tab
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-slate-600 hover:bg-slate-100"
+                    ? "bg-primary/15 text-primary"
+                    : "text-muted-foreground hover:bg-secondary-dark"
                 }`}
               >
                 {tab}
@@ -89,12 +89,12 @@ export default function SettingsForm({
         )}
       </div>
 
-      <div className="flex gap-4 py-4 px-4 items-end justify-between border-t border-slate-200">
+      <div className="flex gap-4 py-4 px-4 items-end justify-between border-t border-border">
         <div className="flex flex-row gap-4">
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 bg-slate-200 te-600xt-slate-700 rounded-md hover:bg-slate-300"
+            className="px-4 py-2 bg-secondary-dark text-muted-foreground rounded-md hover:bg-secondary-darker"
           >
             Cancel
           </button>
@@ -103,13 +103,13 @@ export default function SettingsForm({
           <button
             type="button"
             onClick={() => form.reset()}
-            className="px-4 py-2 bg-slate-200 text-slate-700 rounded-md hover:bg-slate-300"
+            className="px-4 py-2 bg-secondary-dark text-muted-foreground rounded-md hover:bg-secondary-darker"
           >
             Reset
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary-dark"
           >
             Save
           </button>

@@ -4,6 +4,7 @@ import { DB_NAME } from './constants';
 
 class AppDB extends Dexie {
   projects!: EntityTable<Project, 'id'>;
+  taskData!: EntityTable<StoredTaskData, 'projectId'>;
 
   constructor() {
     super(DB_NAME);
@@ -21,6 +22,11 @@ class AppDB extends Dexie {
 
         await Promise.all([tx.table('projects').clear()]);
       });
+
+    this.version(3).stores({
+      projects: 'id,lastAccessed',
+      taskData: 'projectId',
+    });
   }
 }
 

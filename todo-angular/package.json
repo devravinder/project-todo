@@ -8,7 +8,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "deploy": "pnpm run build && gh-pages --cname=todo.paravartech.com --dist dist/todo-app/browser --branch deploy"
-
   },
   "prettier": {
     "printWidth": 100,
@@ -23,7 +22,7 @@
     ]
   },
   "private": true,
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@11.15.1",
   "dependencies": {
     "@angular/common": "^21.1.0",
     "@angular/compiler": "^21.1.0",
