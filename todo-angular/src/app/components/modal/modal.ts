@@ -24,7 +24,7 @@ import { CLOSE } from '../../util/icons';
 
           <button
             (click)="onClose.emit()"
-            class="absolute top-4 right-8 px-3 py-1 rounded-full cursor-pointer text-xl text-muted-foreground/80 hover:text-muted-foreground hover:bg-secondary-dark focus:outline-none"
+            class="absolute top-4 right-4 sm:right-8 z-10 px-3 py-1 rounded-full cursor-pointer text-xl bg-secondary text-muted-foreground/80 shadow hover:text-muted-foreground hover:bg-secondary-dark focus:outline-none"
           >
             {{ CLOSE }}
           </button>
