@@ -1,0 +1,1 @@
+import{D as t,ab as i,q as n}from"./chunk-KQISPCQR.js";var r=class e{isOpening=t(!1);async openFolder(){this.isOpening.set(!0);try{return await i.getHandle()}finally{this.isOpening.set(!1)}}static \u0275fac=function(s){return new(s||e)};static \u0275prov=n({token:e,factory:e.\u0275fac,providedIn:"root"})};export{r as a};
