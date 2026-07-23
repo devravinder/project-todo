@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
     <div class="w-full h-screen flex flex-col">
       <app-header class="w-full border-b shadow border-border px-4 py-3" />
       <main class="w-full max-w-8xl mx-auto flex-1 flex flex-col overflow-hidden">
-        <div class="w-full h-full overflow-auto flex justify-around gap-4 p-8">
+        <div class="w-full h-full flex flex-col gap-3 p-3 sm:p-4 md:p-8">
           <router-outlet />
         </div>
       </main>

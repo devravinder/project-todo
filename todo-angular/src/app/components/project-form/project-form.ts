@@ -15,17 +15,17 @@ export interface ProjectFormData {
   template: `
     <!-- project-form.component.html -->
     <div class="flex-1 h-full w-full flex flex-col justify-between">
-        <div class="flex-1 min-w-sm overflow-auto flex flex-col gap-4 p-4 px-3">
+        <div class="flex-1 min-w-0 overflow-auto flex flex-col gap-4 p-4 px-3">
             <!-- Active Project Selection -->
               <div class="w-full flex flex-col gap-2 px-1">
                 <label for="activeProjectId" class="block text-sm font-medium text-foreground/80">
                   Active Project
                 </label>
-                <div class="w-full flex flex-row gap-2">
+                <div class="w-full flex flex-row flex-wrap gap-2">
                   <select
                     id="activeProjectId"
                     [formField]="form.activeProjectId"
-                    class="w-full px-3 py-2 border border-muted-foreground/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/70 focus:border-transparent"
+                    class="w-full min-w-0 flex-1 px-3 py-2 border border-muted-foreground/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/70 focus:border-transparent"
                   >
                     @for (project of formData().projects; track project.id) {
                       <option [value]="project.id">
@@ -39,7 +39,7 @@ export interface ProjectFormData {
                     [disabled]="isOpening()"
                     type="button"
                     title="Add local folder project"
-                    class="px-4 py-2 bg-primary cursor-pointer disabled:cursor-not-allowed text-accent-foreground rounded-lg hover:bg-primary-dark focus:outline-none focus:ring-none"
+                    class="shrink-0 px-4 py-2 bg-primary cursor-pointer disabled:cursor-not-allowed text-accent-foreground rounded-lg hover:bg-primary-dark focus:outline-none focus:ring-none"
                   >
                     @if (isOpening()) {
                       <span class="animate-spin inline-block">{{ADD}}</span>
@@ -52,7 +52,7 @@ export interface ProjectFormData {
                     (click)="onNewMemoryProjectClick()"
                     type="button"
                     title="Add browser storage project"
-                    class="px-4 py-2 bg-secondary-dark cursor-pointer text-foreground rounded-lg hover:bg-secondary-darker focus:outline-none focus:ring-none"
+                    class="shrink-0 px-4 py-2 bg-secondary-dark cursor-pointer text-foreground rounded-lg hover:bg-secondary-darker focus:outline-none focus:ring-none"
                   >
                     <span>{{STORE}}{{ADD}}</span>
                   </button>
@@ -87,13 +87,13 @@ export interface ProjectFormData {
                       [formField]="form.projects[i].name"
                       type="text"
                       (keydown)="onKeyDown($event)"
-                      class="w-full px-3 py-2 border border-muted-foreground/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/70 focus:border-transparent"
+                      class="w-full min-w-0 px-3 py-2 border border-muted-foreground/30 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/70 focus:border-transparent"
                     />
                     <button
                       type="button"
                       [disabled]="isActiveProject(project.id)"
                       (click)="onDeleteProject(i)"
-                      class="cursor-pointer px-4 py-2 text-red-500 disabled:cursor-not-allowed disabled:bg-muted-foreground bg-red-200 hover:bg-red-300 rounded-lg"
+                      class="shrink-0 cursor-pointer px-4 py-2 text-red-500 disabled:cursor-not-allowed disabled:bg-muted-foreground bg-red-200 hover:bg-red-300 rounded-lg"
                     >
                       {{MINUS}}
                     </button>
@@ -108,8 +108,8 @@ export interface ProjectFormData {
         </div>
 
       <!-- Form Actions -->
-      <div class="flex gap-4 p-4 px-6 items-end justify-between border-t border-border">
-        <div class="flex flex-row gap-4">
+      <div class="flex flex-wrap gap-4 p-4 px-6 items-center justify-between border-t border-border">
+        <div class="flex flex-row flex-wrap gap-4">
           <button
             type="button"
             (click)="handleCancel()"
@@ -118,7 +118,7 @@ export interface ProjectFormData {
             Cancel
           </button>
         </div>
-        <div class="flex flex-row gap-4">
+        <div class="flex flex-row flex-wrap gap-4">
           <button
             type="button"
             (click)="handleReset()"

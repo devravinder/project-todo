@@ -68,7 +68,7 @@ const convertSubtasksToMarkdown = (subTasks?: SubTask[]): string[] => {
   selector: 'app-task-form',
   imports: [FormField, NgClass],
   template: `
-    <div class="max-w-4xl mx-auto p-6">
+    <div class="max-w-4xl mx-auto p-4 sm:p-6">
       <div class="space-y-6">
         <!-- Title -->
         <div>
@@ -235,8 +235,8 @@ const convertSubtasksToMarkdown = (subTasks?: SubTask[]): string[] => {
         </div>
 
         <!-- Actions -->
-        <div class="flex gap-4 pt-6 items-end justify-between">
-          <div class="flex gap-4">
+        <div class="flex flex-wrap gap-4 pt-6 items-center justify-between">
+          <div class="flex flex-wrap gap-4">
             @if (isEdit()) {
               <button
                 type="button"
@@ -255,7 +255,7 @@ const convertSubtasksToMarkdown = (subTasks?: SubTask[]): string[] => {
             </button>
           </div>
 
-          <div class="flex gap-4">
+          <div class="flex flex-wrap gap-4">
             <button
               type="button"
               (click)="onReset()"

@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   template: `
     <div class="flex-1 flex items-center justify-center bg-background">
       <div
-        class="rounded-lg w-full h-full sm:h-10/12 sm:w-10/12 md:w-8/12 md:h-10/12 p-20 flex flex-col gap-8 items-center"
+        class="rounded-lg w-full h-full sm:h-10/12 sm:w-10/12 md:w-8/12 md:h-10/12 p-6 sm:p-10 md:p-16 lg:p-20 overflow-y-auto flex flex-col gap-8 items-center"
       >
         <h2 class="text-4xl font-serif font-semibold text-foreground">
           {{ welcomeData.header }}

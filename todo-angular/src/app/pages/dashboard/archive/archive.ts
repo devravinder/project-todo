@@ -19,7 +19,7 @@ export const archiveTasksResolver: ResolveFn<{ tasks: Task[]; status: string }> 
       <app-kanban-column
         [title]="archiveData().status"
         [tasks]="archiveData().tasks"
-        class="flex flex-col h-fit min-h-[80vh] shrink-0 w-80 rounded-lg border border-border"
+        class="flex flex-col h-fit min-h-[80vh] shrink-0 w-80 max-w-full rounded-lg border border-border"
       />
     </app-modal>
   `,

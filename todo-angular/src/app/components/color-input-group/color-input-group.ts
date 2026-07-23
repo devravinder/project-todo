@@ -6,7 +6,7 @@ import { form } from '@angular/forms/signals';
 @Component({
   selector: 'app-color-input-group',
   imports: [ColorPicker, ColorPreview],
-  template: `<div class="min-w-0 flex flex-row items-start gap-4 p-4 bg-card dark:bg-secondary-darker rounded-lg border border-border shadow dark:shadow-muted-foreground/50">
+  template: `<div class="min-w-0 flex flex-row flex-wrap items-start gap-4 p-4 bg-card dark:bg-secondary-darker rounded-lg border border-border shadow dark:shadow-muted-foreground/50">
     <app-color-preview [label]="label()" [color]="formData()" />
     <app-color-picker
       label="Text Color"

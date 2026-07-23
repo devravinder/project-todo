@@ -64,15 +64,15 @@ const revertListMap = (obj: Record<StringArrayKey, List[]>) => {
   selector: 'app-settings-form',
   imports: [NgClass, StringArrayInput, WorkflowStatusInput, PriorityColorsInput],
   template: `
-    <div class="w-full flex-1 flex flex-col">
-      <div class="flex-1 flex flex-row w-full">
-        <div class="w-48 border-r border-border">
-          <nav class="p-4 space-y-1 w-full">
+    <div class="w-full flex-1 flex flex-col overflow-hidden">
+      <div class="flex-1 flex flex-col sm:flex-row w-full min-h-0 overflow-hidden">
+        <div class="w-full sm:w-48 shrink-0 border-b sm:border-b-0 sm:border-r border-border">
+          <nav class="flex flex-row sm:flex-col gap-1 sm:gap-0 sm:space-y-1 overflow-x-auto sm:overflow-visible p-2 sm:p-4 w-full">
             @for (tab of tabs(); track tab) {
               <button
                 type="button"
                 (click)="onTabClick(tab)"
-                class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                class="shrink-0 sm:w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
                 [ngClass]="
                   activeTab() == tab
                     ? 'bg-primary/15 text-primary'
@@ -84,7 +84,7 @@ const revertListMap = (obj: Record<StringArrayKey, List[]>) => {
             }
           </nav>
         </div>
-        <div class="flex-1 flex flex-col gap-2 p-4 overflow-auto">
+        <div class="flex-1 min-w-0 flex flex-col gap-2 p-4 overflow-auto">
           <h3 class="text-lg font-medium text-foreground px-2">Manage {{ activeTab() }}</h3>
           <div class="flex flex-col gap-4 overflow-auto max-h-92 p-2">
             @if (activeItems().length) {
@@ -111,8 +111,8 @@ const revertListMap = (obj: Record<StringArrayKey, List[]>) => {
         </div>
       </div>
       <!-- Form Actions -->
-      <div class="flex w-full gap-4 p-4 px-6 items-end justify-between border-t border-border">
-        <div class="flex flex-row gap-4">
+      <div class="flex flex-wrap w-full gap-4 p-4 px-6 items-center justify-between border-t border-border">
+        <div class="flex flex-row flex-wrap gap-4">
           <button
             type="button"
             (click)="handleCancel()"
@@ -121,7 +121,7 @@ const revertListMap = (obj: Record<StringArrayKey, List[]>) => {
             Cancel
           </button>
         </div>
-        <div class="flex flex-row gap-4">
+        <div class="flex flex-row flex-wrap gap-4">
           <button
             type="button"
             (click)="handleReset()"
